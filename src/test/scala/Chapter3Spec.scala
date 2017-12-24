@@ -75,8 +75,10 @@ class Chapter3Spec extends FlatSpec {
 
   "Chapter3.Person" should "Have a companion object with an apply method that accepts a whole name as a string. Should only take 1 parameter" in {
     val johnDoe = Person("John Doe")
+    val johnDoeNormal = Person("John", "Doe")
     assert(johnDoe.firstName == "John")
     assert(johnDoe.lastName == "Doe")
+    assert(johnDoe == johnDoeNormal)
   }
 
   "Chapter3.Director companion object" should "Have an apply constructor" in {
@@ -114,5 +116,17 @@ class Chapter3Spec extends FlatSpec {
     val thomasCrownAffair = new Film("The Thomas Crown Affair", 1999, 6.8, mcTiernan)
     assert(Film.oldestDirectorAtTheTime(darkKnight, thomasCrownAffair) == mcTiernan)
     assert(Film.oldestDirectorAtTheTime(inception, huntForRedOctober) == nolan)
+  }
+
+  "Chapter3.Dad" should "Rate Clint Eastwood movies as 10.0, John McTiernan movies as 7.0 and all other movies as 3.0" in {
+    val eastwood          = new Director("Clint", "Eastwood", 1930)
+    val mcTiernan         = new Director("John", "McTiernan", 1951)
+    val nolan             = new Director("Christopher", "Nolan", 1970)
+    val outlawJoseyWales  = new Film("The Outlaw Josey Wales", 1976, 7.9, eastwood)
+    val huntForRedOctober = new Film("The Hunt for Red October", 1990, 7.6, mcTiernan)
+    val inception         = new Film("Inception", 2010, 8.8, nolan)
+    assert(Dad.rate(outlawJoseyWales) == 10.0)
+    assert(Dad.rate(huntForRedOctober) == 7.0)
+    assert(Dad.rate(inception) == 3.0)
   }
 }

@@ -1,3 +1,3 @@
 package Chapter3
 
-class Cat(val color: String, val food: String) { }
+case class Cat(color: String, food: String) { }
