@@ -28,4 +28,10 @@ case object Pink extends Color {
   val blue: Byte = (Byte.MaxValue / 2).toByte
 }
 
+case object Green extends Color {
+  val red: Byte = 0
+  val green: Byte = Byte.MaxValue
+  val blue: Byte = 0
+}
+
 case class CustomColor(red: Byte, green: Byte, blue: Byte) extends Color { }
