@@ -10,25 +10,25 @@ sealed trait Color {
 
 }
 
-case object Red extends Color {
+case object RedColor extends Color {
   val red: Byte = Byte.MaxValue
   val green: Byte = 0
   val blue: Byte = 0
 }
 
-case object Yellow extends Color {
+case object YellowColor extends Color {
   val red: Byte = Byte.MaxValue
   val green: Byte = Byte.MaxValue
   val blue: Byte = 0
 }
 
-case object Pink extends Color {
+case object PinkColor extends Color {
   val red: Byte = Byte.MaxValue
   val green: Byte = (Byte.MaxValue / 2).toByte
   val blue: Byte = (Byte.MaxValue / 2).toByte
 }
 
-case object Green extends Color {
+case object GreenColor extends Color {
   val red: Byte = 0
   val green: Byte = Byte.MaxValue
   val blue: Byte = 0

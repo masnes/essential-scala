@@ -33,9 +33,9 @@ final case class Square(size: Double, color: Color) extends Rectangular {
 object Draw {
   def apply(color: Color): String = {
     color match {
-      case Red => "red"
-      case Pink => "pink"
-      case Yellow => "yellow"
+      case RedColor => "red"
+      case PinkColor => "pink"
+      case YellowColor => "yellow"
       case CustomColor(_, _, _) => if (color.isLight) "light" else "dark"
     }
   }
