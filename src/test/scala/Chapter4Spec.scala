@@ -44,9 +44,9 @@ class Chapter4Spec extends FlatSpec {
 
   "Chapter4.IntList" should "Build and sum in a limited recursive fashion with a base case." in {
     val example = Pair(1, Pair(2, Pair(3, End)))
-    assert(ListProcessor.sum(example) == 6)
-    assert(ListProcessor.sum(example.tail) == 5)
-    assert(ListProcessor.sum(End) == 0)
+    assert(example.sum == 6)
+    assert(example.tail.sum == 5)
+    assert(End.sum == 0)
     assert(example.length == 3)
     assert(example.tail.length == 2)
     assert(End.length == 0)

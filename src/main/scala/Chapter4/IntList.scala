@@ -1,29 +1,19 @@
 package Chapter4
 
 sealed trait IntList {
+  def fold[A](end: A, f: (Int, A) => A): A =
+    this match {
+      case End => end
+      case Pair(hd, tl) => f(hd, tl.fold(end, f))
+    }
   def length: Int =
-    this match {
-      case End => 0
-      case Pair(_, tl) => 1 + tl.length
-    }
+    fold[Int](0, (_, tl) => 1 + tl)
   def product: Int =
-    this match {
-      case End => 1
-      case Pair(hd, tl) => hd * tl.product
-    }
+    fold[Int](1, (hd, tl) => hd * tl)
+  def sum: Int =
+    fold[Int](0, (hd, tl) => hd + tl)
   def double: IntList =
-    this match {
-      case End => End
-      case Pair(hd, tl) => Pair(2*hd, tl.double)
-    }
+    fold[IntList](End, (hd, tl) => Pair(2*hd, tl))
 }
 case object End extends IntList
 final case class Pair(head: Int, tail: IntList) extends IntList
-
-case object ListProcessor {
-  def sum(list: IntList): Int =
-    list match {
-      case End => 0
-      case Pair(hd, tl) => hd + sum(tl)
-    }
-}
