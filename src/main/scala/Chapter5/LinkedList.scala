@@ -1,6 +1,12 @@
 package Chapter5
 
 sealed trait LinkedList[A] {
+  def map[B](fn: A => B): LinkedList[B] =
+    this match {
+      case Pair(hd, tl) => Pair(fn(hd), tl.map(fn))
+      case End() => End[B]()
+    }
+
   def fold[B](end: B, f: (A, B) => B): B =
     this match {
       case End() => end
@@ -31,3 +37,15 @@ sealed trait LinkedList[A] {
 
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 final case class End[A]() extends LinkedList[A]
+
+object ComputationSequencer {
+  def listAndNegation: List[Int] = {
+    val list = List(1, 2, 3)
+    list.flatMap(x => List(x, -x))
+  }
+
+  def onlyEvens: List[Maybe[Int]] = {
+    val list = List(Full(3), Full(2), Full(1))
+    list.map(maybe => maybe flatMap { x => if (x % 2 == 0) Full(x) else Empty[Int]() } )
+  }
+}

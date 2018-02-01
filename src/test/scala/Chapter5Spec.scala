@@ -36,4 +36,17 @@ class Chapter5Spec extends FlatSpec {
             Node(Leaf("recurse"), Leaf("divine")))))
     assert(treeToString.string(tree) == "To iterate is human, to recurse divine")
   }
+
+  "Chapter5.LinkedList" should "Be doublable, incrementable, and divisible via Map" in {
+    val list: LinkedList[Int] = Pair(1, Pair(2, Pair(3, End())))
+    val double: (Int => Int) = _ * 2
+    val doubled: LinkedList[Int] = Pair(2, Pair(4, Pair(6, End())))
+    val increment: (Int => Int) = _ + 1
+    val incremented: LinkedList[Int] = Pair(2, Pair(3, Pair(4, End())))
+    val divideByThree: (Int => Int) = _ / 3
+    val divided: LinkedList[Int] = Pair(0, Pair(0, Pair(1, End())))
+    assert(list.map(double) == doubled)
+    assert(list.map(increment) == incremented)
+    assert(list.map(divideByThree) == divided)
+  }
 }
