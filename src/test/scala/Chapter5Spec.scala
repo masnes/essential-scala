@@ -1,3 +1,4 @@
+import Chapter5.Section5_6.{sumFailure, sumSuccess, _}
 import Chapter5._
 import org.scalatest._
 
@@ -48,5 +49,12 @@ class Chapter5Spec extends FlatSpec {
     assert(list.map(double) == doubled)
     assert(list.map(increment) == incremented)
     assert(list.map(divideByThree) == divided)
+  }
+
+  "Chapter5.Section5_6.Expression" should "Use an eval method with Sum" in {
+    assert(Addition(Number(1), Number(2)).eval == sumSuccess(3))
+    assert(SquareRoot(Number(-1)).eval == sumFailure("Square root of negative number"))
+    assert(Division(Number(4), Number(0)).eval == sumFailure("Division by zero"))
+    assert(Division(Addition(Subtraction(Number(8), Number(6)), Number(2)), Number(2)).eval == sumSuccess(2.0))
   }
 }
