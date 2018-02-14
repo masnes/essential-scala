@@ -317,7 +317,35 @@ class Chapter6Spec extends FlatSpec {
         oldest <- oldest
       } yield favoriteColor(oldest)
     }
-    
   }
+
+  "6.8.4 Exercises" should "be accurate" in {
+    // Union of Sets
+    def unionSet[A](s1: Set[A], s2: Set[A]): Set[A] =
+      s1.foldLeft(s2)((set, elt) => set + elt)
+
+    assert(unionSet(Set(1, 2, 3), Set(2, 3, 4, 5)) == Set(1,2,3,4,5))
+
+    def unionMap[A](m1: Map[A, Int], m2: Map[A, Int]): Map[A, Int] =
+      m2.foldLeft(m1){ (map: Map[A, Int], elt) =>
+        {
+          val (k, v) = elt
+          val oldV = map.getOrElse(k, 0)
+          map + (k -> (v + oldV))
+        }
+      }
+
+    assert(
+      unionMap(Map('a' -> 1, 'b' -> 2), Map('a' -> 2, 'b' -> 4))
+      == Map('a' -> 3, 'b' -> 6))
+
+    def genericUnion[A, B](m1: Map[A, B], m2: Map[A, B], add: (B, B) => B): Map[A, B] =
+      m2.foldLeft(m1){ (map, elt) =>
+        val (k, v) = elt
+        val newV = map.get(k).map(v2 => add(v, v2)).getOrElse(v)
+        map + (k -> newV)
+      }
+  }
+
 }
 
