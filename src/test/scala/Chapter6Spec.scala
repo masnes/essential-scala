@@ -1,5 +1,4 @@
 import Chapter6._
-
 import java.util.NoSuchElementException
 
 import org.scalatest._
@@ -189,6 +188,136 @@ class Chapter6Spec extends FlatSpec {
 
   "6.3.1 Exercises" should "be accurate" in {
 
+    // Nolan films
+    for {
+      film <- nolan.films
+    } yield film.name
+
+    // Cinephile
+    for {
+      director <- directors
+      film <- director.films
+    } yield film.name
+
+    // High Score Table
+    val films = for {
+      director <- directors
+      film <- director.films
+    } yield film
+    films sortWith { (a, b) =>
+      a.imdbRating > b.imdbRating
+    }
+
+    // Tonight's Listings
+    for {
+      director <- directors
+      film <- director.films
+    } println(
+      s"Tonight only! ${film.name} by ${director.firstName} ${director.lastName}")
+  }
+
+  "6.5.1.4 Excercises" should "be accurate" in {
+    // A Simple Calculator
+    //def calculator(operand1: String, operator: String, operand2: String): Unit =
+      //for {
+        //a: Int <- operand1.toInt
+        //b: Int <- operand2.toInt
+        //ans <- operator  match {
+          //case "+" => Some(a + b)
+          //case "-" => Some(a - b)
+          //case "/" => if (b != 0) Some(a / b) else None
+          //case "*" => Some(a * b)
+          //case _   => None
+        //}
+      //} yield ans
+  }
+
+  "6.6.2 Exercises" should "be accurate" in {
+    import scala.util.Try
+    val opt1 = Some(1)
+    val opt2 = Some(2)
+    val opt3 = Some(3)
+
+    val seq1 = Seq(1)
+    val seq2 = Seq(2)
+    val seq3 = Seq(3)
+
+    val try1 = Try(1)
+    val try2 = Try(2)
+    val try3 = Try(3)
+
+    val newOpt = for {
+      a <- opt1
+      b <- opt2
+      c <- opt3
+    } yield a + b + c
+
+    val newSeq = for {
+      s1 <- seq1
+      s2 <- seq2
+      s3 <- seq3
+    } yield s1 + s2 + s3
+
+    val newTry = for {
+      t1 <- try1
+      t2 <- try2
+      t3 <- try3
+    } yield t1 + t2 + t3
+  }
+
+  "6.8.1 Exercises" should "be accurate" in {
+    val example = Map("a" -> 1, "b" -> 2, "c" -> 3)
+    val example2 = Map(("a", 1), ("b", 2), ("c", 3))
+    assert(example == example2)
+  }
+
+  "6.8.3 Exercises" should "be accurate" in {
+    val people = Set(
+      "Alice",
+      "Bob",
+      "Charlie",
+      "Derek",
+      "Edith",
+      "Fred")
+
+    val ages = Map(
+      "Alice"   -> 20,
+      "Bob"     -> 30,
+      "Charlie" -> 50,
+      "Derek"   -> 40,
+      "Edith"   -> 10,
+      "Fred"    -> 60)
+
+    val favoriteColors = Map(
+      "Bob"     -> "green",
+      "Derek"   -> "magenta",
+      "Fred"    -> "yellow")
+
+    val favoriteLolcats = Map(
+      "Alice"   -> "Long Cat",
+      "Charlie" -> "Ceiling Cat",
+      "Edith"   -> "Cloud Cat")
+
+    def favoriteColor(name: String): String =
+      favoriteColors.getOrElse(name, "beige")
+
+    def printColors(): Unit =
+      for {
+        person <- people
+      } println(s"$person's favorite color is ${favoriteColor(person)}")
+
+    def lookup(name: String, map: Map[String, String]): Option[String] =
+      map get name
+
+    def oldestPersonsColor: Option[String] = {
+      val oldest = people.foldLeft(Option.empty[String]){ (older, person) =>
+        if (ages.getOrElse(person, 0) > older.flatMap(ages.get).getOrElse(0))
+          Some(person) else older }
+      for {
+        oldest <- oldest
+      } yield favoriteColor(oldest)
+    }
+    
   }
 }
 
