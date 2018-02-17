@@ -232,6 +232,51 @@ class Chapter6Spec extends FlatSpec {
       //} yield ans
   }
 
+  "6.5.1 Exercises" should "be accurate" in {
+    def addOptions(one: Option[Int], two: Option[Int]): Option[Int] =
+      for {
+        a ← one
+        b ← two
+      } yield a + b
+
+    def addOptionsMapFlatmap(one: Option[Int], two: Option[Int]): Option[Int] =
+      one.flatMap(a ⇒ two.map(b ⇒ a + b))
+
+    def addOptionsOverride(one: Option[Int], two: Option[Int], three: Option[Int]):
+        Option[Int] =
+      for {
+        a ← one
+        b ← two
+        c ← three
+      } yield a + b + c
+
+    def addOptionsMapFlatmapOverride(one: Option[Int], two: Option[Int], three: Option[Int]):
+        Option[Int] = one.flatMap(a ⇒ two.flatMap(b ⇒ three.map(c ⇒ a + b + c)))
+
+    def divide(numerator: Int, denominator: Int): Option[Int] =
+      if (denominator != 0)
+        Some(numerator / denominator)
+      else
+        None
+
+    def divideOptions(numerator: Option[Int], denominator: Option[Int]):
+        Option[Int] =
+      for {
+        n ← numerator
+        d ← denominator
+        r ← divide(n, d)
+      } yield r
+
+    assert(addOptions(Option(1), Option(2)).getOrElse(0) == 3)
+    assert(addOptionsOverride(Option(1), Option(2), Option(3)).getOrElse(0) == 6)
+    assert(addOptionsMapFlatmap(Option(1), Option(2)).getOrElse(0) == 3)
+    assert(addOptionsMapFlatmapOverride(Option(1), Option(2), Option(3)).getOrElse(0) == 6)
+    assert(divide(4, 2).getOrElse(0) == 2)
+    assert(divide(1, 0) == None)
+    assert(divideOptions(Some(4), Some(2)) == Some(2))
+  }
+
+
   "6.6.2 Exercises" should "be accurate" in {
     import scala.util.Try
     val opt1 = Some(1)
@@ -346,6 +391,5 @@ class Chapter6Spec extends FlatSpec {
         map + (k -> newV)
       }
   }
-
 }
 
