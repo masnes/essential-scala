@@ -24,16 +24,19 @@ trait Equal[A] {
   def equal(v1: A, v2: A): Boolean
 }
 
-object CaseInsensitiveEqualImplicit {
-  implicit object CaseInsensitiveEqual extends Equal[String] {
-    def equal(s1: String, s2: String): Boolean =  s1.toLowerCase == s2.toLowerCase()
+object Equal {
+  def apply[A](implicit instance: Equal[A]): Equal[A] =
+    instance
+
+  implicit class ToEqual[A](in: A) {
+    def ===(other: A)(implicit equal: Equal[A]): Boolean =
+      equal.equal(in, other)
   }
 }
 
-implicit class StringEquality[String](s1: String) {
-  def ===(s2: String)(implicit equal: Equal[String]): Boolean =
-    equal.equal(s1, s2)
+implicit val caseInsensitiveEquals: Equal[String] = new Equal[String] {
+  def equal(s1: String, s2: String): Boolean = s1.toLowerCase() == s2.toLowerCase()
 }
 
-import CaseInsensitiveEqualImplicit._
+import Equal._
 assert("abcd".===("ABCD"))
