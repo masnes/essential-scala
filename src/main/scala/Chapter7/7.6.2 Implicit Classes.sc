@@ -34,9 +34,7 @@ object Equal {
   }
 }
 
-implicit val caseInsensitiveEquals: Equal[String] = new Equal[String] {
-  def equal(s1: String, s2: String): Boolean = s1.toLowerCase() == s2.toLowerCase()
-}
+implicit val caseInsensitiveEquals: Equal[String] = (s1: String, s2: String) => s1.toLowerCase() == s2.toLowerCase()
 
 import Equal._
 assert("abcd".===("ABCD"))
