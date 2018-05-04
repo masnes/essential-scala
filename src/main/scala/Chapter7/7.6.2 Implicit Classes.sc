@@ -38,3 +38,6 @@ implicit val caseInsensitiveEquals: Equal[String] = (s1: String, s2: String) => 
 
 import Equal._
 assert("abcd".===("ABCD"))
+Equal[String].equal("abcd", "ABCD")
+
+
