@@ -1,5 +1,5 @@
 import org.scalatest._
-import Chapter9.Positive
+import Chapter9._
 
 class Chapter9Spec extends FlatSpec {
   assert("No" ==
@@ -13,4 +13,11 @@ class Chapter9Spec extends FlatSpec {
       case Positive(_) => "Yes"
       case _ => "No"
     }))
+
+  assert(
+    "Sir Lord Doctor David Gurnell" ==
+      ("sir lord doctor david gurnell" match {
+        case Titlecase(str) => str
+      })
+  )
 }
